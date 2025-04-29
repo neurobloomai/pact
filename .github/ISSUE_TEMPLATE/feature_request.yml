@@ -1,0 +1,38 @@
+# .github/ISSUE_TEMPLATE/feature_request.yml
+name: 🌟 Feature Request
+description: Suggest a new feature or enhancement for the PACT Adapter.
+title: "[Feature] "
+labels: [enhancement]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for contributing! Please describe the feature you'd like to see.
+
+  - type: textarea
+    id: summary
+    attributes:
+      label: Feature Summary
+      description: What is the goal or capability you’re asking for?
+
+  - type: textarea
+    id: usecase
+    attributes:
+      label: Use Case
+      description: What problem does this solve or what workflow does it support?
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed Implementation (optional)
+      description: Any idea how it could be built?
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority
+      options:
+        - Low
+        - Medium
+        - High
+      default: 1
