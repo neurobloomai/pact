@@ -1,0 +1,45 @@
+# .github/ISSUE_TEMPLATE/bug_report.yml
+name: 🔧 Bug Report
+description: Report a problem with the PACT Adapter MVP.
+title: "[Bug] "
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Please describe the issue you encountered.
+
+  - type: input
+    id: environment
+    attributes:
+      label: Environment
+      description: OS, Python version, Docker version (if applicable)
+      placeholder: ex. Ubuntu 22.04, Python 3.12
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to Reproduce
+      description: List the steps needed to reproduce the issue.
+      placeholder: |
+        1. Run `uvicorn main:app`
+        2. Send sample payload to `/translate`
+        3. See error...
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected Behavior
+      description: What did you expect to happen?
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual Behavior
+      description: What actually happened?
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Error Logs (if any)
+      description: Paste any error stack trace or logs here.
