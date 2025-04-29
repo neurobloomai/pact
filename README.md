@@ -5,6 +5,15 @@
 ![PACT Logo](https://path-to-neurobloom-logo.png)
 
 ---
+# 🧩 PACT Adapter MVP
+
+![Build Status](https://img.shields.io/github/actions/workflow/status/aknbloom/pact_adapter_mvp/python-ci.yml?branch=main)
+![License](https://img.shields.io/github/license/aknbloom/pact_adapter_mvp)
+![Issues](https://img.shields.io/github/issues/aknbloom/pact_adapter_mvp)
+![PRs](https://img.shields.io/github/issues-pr/aknbloom/pact_adapter_mvp)
+![Last Commit](https://img.shields.io/github/last-commit/aknbloom/pact_adapter_mvp)
+
+---
 
 ## 🌍 Vision
 
