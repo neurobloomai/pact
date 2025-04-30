@@ -76,7 +76,11 @@ Example Response:
 
 ## 🧩 System Architecture
 
-![PACT Flow Diagram](https://path-to-your-diagram.png)
+## Architecture
+
+The following diagram illustrates the PACT message flow:
+
+![PACT Flow Diagram](docs/images/pact_flow_diagram.png)
 
 - **PACT Gateway** → **ML Intent Classifier** → **Intent Translator** → **Agent Router** → **Adapter Layer** → **Target Agent** → **Response Handler**
 - Resilient design with fallbacks for low-confidence intents, adapter failures, and timeouts.
