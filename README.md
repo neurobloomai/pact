@@ -86,6 +86,10 @@ Example Response:
 
 ## Architecture
 
+PACT As a Translation Layer
+
+![PACT As a Translation Layer](docs/images/PACT_As_a_Translation_Layer.png)
+
 The following diagram illustrates the PACT message flow:
 
 ![PACT Flow Diagram](docs/images/pact_agent_resilience_architecture.png)
