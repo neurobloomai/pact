@@ -22,6 +22,12 @@ In an increasingly agent-driven world, PACT provides a simple, open, and scalabl
 > "Let every agent have its mind... PACT translates their intents."
 
 ---
+## 🌍 Current Protocol Landscape at a Glance
+
+Protocol | Focus | Type | Owned By | Strength
+MCP (Model Context Protocol) | App ↔ Model | Vertical | Anthropic | Context & Tool Enrichment
+A2A (Agent2Agent) | Agent ↔ Agent | Horizontal | Google | Multi-agent Coordination
+PACT (yours) | Agent ↔ Agent | Horizontal + Middleware | Vendor-neutral | Intent Translation & Interop
 
 ## 🚀 Quickstart
 
