@@ -2,7 +2,7 @@
 
 **Protocol for Agent Collaboration & Transfer (PACT)** — Building the universal, lightweight communication layer for intelligent agents.
 
-![PACT Logo](https://path-to-neurobloom-logo.png)
+![PACT Logo](docs/images/PACT_Protocol_Logo_Design.png)
 
 ---
 # 🧩 PACT Adapter MVP
