@@ -97,6 +97,14 @@ The following diagram illustrates the PACT message flow:
 - **PACT Gateway** → **ML Intent Classifier** → **Intent Translator** → **Agent Router** → **Adapter Layer** → **Target Agent** → **Response Handler**
 - Resilient design with fallbacks for low-confidence intents, adapter failures, and timeouts.
 
+Key components:
+- **PACT Gateway**: Validates incoming message envelope format
+- **ML Intent Classifier**: Determines intent with confidence score
+- **Intent Translator**: Maps between different intent naming formats
+- **Agent Router**: Selects appropriate target agent
+- **Adapter Layer**: Converts to target platform's message format
+- **Target Agent**: Processes the intent and generates a response
+- **Response Handler**: Wraps response in standard PACT envelope
 ---
 
 ## 📦 Docker Deployment
