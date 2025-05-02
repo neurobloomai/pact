@@ -105,6 +105,8 @@ Key components:
 - **Adapter Layer**: Converts to target platform's message format
 - **Target Agent**: Processes the intent and generates a response
 - **Response Handler**: Wraps response in standard PACT envelope
+- **Resilient Design: Built-in fallback mechanisms for low-confidence intents, timeouts, and adapter failures
+- **Platform-Agnostic: Works with any conversational AI platform
 ---
 
 ## 📦 Docker Deployment
