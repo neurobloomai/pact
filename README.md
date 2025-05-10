@@ -126,7 +126,7 @@ Key components:
 Protocol design isn't just about what works — it's about what fails gracefully and secures trust at every layer.
 How PACT's security and resilience loop works (e.g., Inputs → Threat Modeling → Protocol Refinement → Resilience Mechanisms)?
 
-![PACT’s-security-focuse](docs/images/PACT-security-focused technical-development-loop.png)
+![PACT’s-security-focuse](docs/images/PACT-security-focused-technical-development-loop.png)
 
 ## 📦 Docker Deployment
 
