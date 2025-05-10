@@ -123,6 +123,9 @@ Key components:
 - **Platform-Agnostic**: Works with any conversational AI platform
 ---
 
+Protocol design isn't just about what works — it's about what fails gracefully and secures trust at every layer.
+How PACT's security and resilience loop works (e.g., Inputs → Threat Modeling → Protocol Refinement → Resilience Mechanisms)?
+
 ## 📦 Docker Deployment
 
 ```bash
