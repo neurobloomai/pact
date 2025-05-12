@@ -20,6 +20,10 @@
 In an increasingly agent-driven world, PACT provides a simple, open, and scalable protocol for **intent translation** and **agent interoperability** — enabling diverse AI agents, platforms, and services to collaborate seamlessly.
 
 > "Let every agent have its mind... PACT translates their intents."
+>
+> Why PACT Matters?:
+
+"PACT exists to replace confusion with clarity. To transform fragmented systems into collaborative ecosystems. So builders can spend less time duct-taping intent and more time building tools that matter."
 
 ---
 
