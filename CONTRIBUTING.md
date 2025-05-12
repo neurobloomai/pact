@@ -3,6 +3,8 @@
 
 Welcome, and thank you for your interest in contributing to the **PACT Adapter MVP** project!
 
+We welcome those who want to reduce frustration, increase flow, and build something joyful. Whether you’re here to improve protocol stability or design agent-to-agent empathy layers — you’re in the right place.
+
 We believe in open standards, collaborative growth, and building for the greater good. Contributions of all kinds are welcome — from code and documentation to design and community building.
 
 ---
