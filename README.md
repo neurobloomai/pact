@@ -21,9 +21,9 @@ In an increasingly agent-driven world, PACT provides a simple, open, and scalabl
 
 > "Let every agent have its mind... PACT translates their intents."
 >
-> Why PACT Matters?:
+Why PACT Matters?:
 
-"PACT exists to replace confusion with clarity. To transform fragmented systems into collaborative ecosystems. So builders can spend less time duct-taping intent and more time building tools that matter."
+PACT exists to replace confusion with clarity. To transform fragmented systems into collaborative ecosystems. So builders can spend less time duct-taping intent and more time building tools that matter.
 
 ---
 
