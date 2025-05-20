@@ -1,0 +1,154 @@
+{
+  "version": "0.1.0",
+  "schema": {
+    "schema_id": "PACT-INTENT-SCHEMA",
+    "schema_version": "1.0.0",
+    "last_updated": "2025-07-18T09:00:00Z"
+  },
+  "intent": {
+    "action": "create",
+    "parameters": {},
+    "context": {}
+  },
+  "metadata": {
+    "sender": {
+      "agent_id": "agent_calendar",
+      "timestamp": "2025-07-18T09:00:00Z"
+    },
+    "priority": "normal",
+    "idempotency_key": "a1b2c3d4",
+    "auth": {
+      "signature": "string (JWT or HMAC)",
+      "trust_level": "high | medium | low"
+    }
+  },
+  "validation_constraints": {
+    "intent.action": [
+      "create",
+      "retrieve",
+      "update",
+      "delete",
+      "query",
+      "respond"
+    ],
+    "metadata.priority": [
+      "low",
+      "normal",
+      "high"
+    ],
+    "metadata.sender.agent_id": "string (required)",
+    "metadata.sender.timestamp": "ISO 8601 format"
+  },
+  "routing_logic": {
+    "strategy": "intent_based",
+    "routes": {
+      "create": "agent_creator",
+      "retrieve": "agent_retriever",
+      "update": "agent_updater",
+      "delete": "agent_deleter",
+      "query": "agent_query",
+      "respond": "agent_responder"
+    },
+    "fallback": "agent_default_handler"
+  },
+  "agent_capabilities": [
+    {
+      "agent_id": "agent_calendar",
+      "supported_actions": [
+        "create",
+        "update",
+        "delete"
+      ],
+      "context_requirements": [
+        "origin",
+        "session_id"
+      ]
+    },
+    {
+      "agent_id": "agent_query",
+      "supported_actions": [
+        "query"
+      ],
+      "context_requirements": []
+    }
+  ],
+  "agent_discovery": {
+    "registry_endpoint": "https://neurobloom.ai/pact/agents",
+    "heartbeat_interval_sec": 60,
+    "heartbeat_payload": {
+      "agent_id": "string",
+      "timestamp": "ISO 8601 format",
+      "status": "active | inactive | degraded"
+    }
+  },
+  "error_handling": {
+    "response_format": {
+      "status": "success | error",
+      "code": "string (e.g., ERR_INVALID_INTENT)",
+      "message": "Human-readable error message",
+      "details": "Optional structured debugging info"
+    },
+    "common_errors": [
+      {
+        "code": "ERR_INVALID_INTENT",
+        "message": "Intent action not supported"
+      },
+      {
+        "code": "ERR_MISSING_PARAMETERS",
+        "message": "Required parameters are missing"
+      },
+      {
+        "code": "ERR_UNAUTHORIZED",
+        "message": "Signature validation failed or trust level too low"
+      },
+      {
+        "code": "ERR_TIMEOUT",
+        "message": "Target agent did not respond in time"
+      }
+    ]
+  },
+  "testing_harness": {
+    "mock_agents": [
+      {
+        "agent_id": "mock_summarizer",
+        "responses": {
+          "summarize": "This is a summary."
+        }
+      },
+      {
+        "agent_id": "mock_scheduler",
+        "responses": {
+          "create": "Event created successfully."
+        }
+      }
+    ],
+    "test_cases": [
+      {
+        "intent": "create",
+        "parameters": {
+          "title": "Team Standup",
+          "start_time": "2025-07-18T09:30:00Z"
+        },
+        "expected_response": "Event created successfully."
+      }
+    ]
+  },
+  "api_documentation": {
+    "endpoints": [
+      {
+        "path": "/intent/send",
+        "method": "POST",
+        "description": "Send an intent to be routed to the appropriate agent",
+        "payload": "Schema defined in main block",
+        "response": "error_handling.response_format"
+      },
+      {
+        "path": "/agents/heartbeat",
+        "method": "POST",
+        "description": "Agent heartbeat signal",
+        "payload": "agent_discovery.heartbeat_payload",
+        "response": "{ \"status\": \"success\" }"
+      }
+    ]
+  }
+}
