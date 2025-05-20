@@ -1,0 +1,64 @@
+{
+  "info": {
+    "name": "PACT API Testing Collection",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Send Intent",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"version\": \"0.1.0\",\n  \"intent\": {\n    \"action\": \"create\",\n    \"parameters\": {\n      \"title\": \"Test Event\",\n      \"start_time\": \"2025-07-18T10:00:00Z\"\n    },\n    \"context\": {\n      \"origin\": \"cli_test\",\n      \"session_id\": \"test123\"\n    }\n  },\n  \"metadata\": {\n    \"sender\": {\n      \"agent_id\": \"test_agent\",\n      \"timestamp\": \"2025-07-18T09:55:00Z\"\n    },\n    \"priority\": \"normal\",\n    \"idempotency_key\": \"test_event_001\",\n    \"auth\": {\n      \"signature\": \"test.signature.value\",\n      \"trust_level\": \"high\"\n    }\n  }\n}"
+        },
+        "url": {
+          "raw": "http://localhost:8000/intent/send",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8000",
+          "path": [
+            "intent",
+            "send"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Send Agent Heartbeat",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"agent_id\": \"test_agent\",\n  \"timestamp\": \"2025-07-18T09:55:00Z\",\n  \"status\": \"active\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:8000/agents/heartbeat",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8000",
+          "path": [
+            "agents",
+            "heartbeat"
+          ]
+        }
+      }
+    }
+  ]
+}
