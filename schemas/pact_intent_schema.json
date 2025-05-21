@@ -1,1 +1,83 @@
-
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "PACT Intent Schema",
+  "type": "object",
+  "required": [
+    "version",
+    "intent",
+    "metadata"
+  ],
+  "properties": {
+    "version": {
+      "type": "string"
+    },
+    "intent": {
+      "type": "object",
+      "required": [
+        "action"
+      ],
+      "properties": {
+        "action": {
+          "type": "string"
+        },
+        "parameters": {
+          "type": "object"
+        },
+        "context": {
+          "type": "object"
+        }
+      }
+    },
+    "metadata": {
+      "type": "object",
+      "required": [
+        "sender"
+      ],
+      "properties": {
+        "sender": {
+          "type": "object",
+          "required": [
+            "agent_id",
+            "timestamp"
+          ],
+          "properties": {
+            "agent_id": {
+              "type": "string"
+            },
+            "timestamp": {
+              "type": "string",
+              "format": "date-time"
+            }
+          }
+        },
+        "priority": {
+          "type": "string",
+          "enum": [
+            "low",
+            "normal",
+            "high"
+          ]
+        },
+        "idempotency_key": {
+          "type": "string"
+        },
+        "auth": {
+          "type": "object",
+          "properties": {
+            "signature": {
+              "type": "string"
+            },
+            "trust_level": {
+              "type": "string",
+              "enum": [
+                "low",
+                "medium",
+                "high"
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}
