@@ -1,0 +1,10 @@
+{
+  "fallback_level": 2,
+  "description": "Similar intent used with substitution",
+  "original_intent": {
+    "action": "book",
+    "parameters": {
+      "title": "Meeting"
+    }
+  }
+}

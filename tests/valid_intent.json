@@ -1,1 +1,25 @@
-
+{
+  "version": "0.1.0",
+  "intent": {
+    "action": "create",
+    "parameters": {
+      "title": "Test Event",
+      "start_time": "2025-07-18T10:00:00Z"
+    },
+    "context": {
+      "origin": "test_ui"
+    }
+  },
+  "metadata": {
+    "sender": {
+      "agent_id": "agent_test",
+      "timestamp": "2025-07-18T09:00:00Z"
+    },
+    "priority": "normal",
+    "idempotency_key": "unique-key-001",
+    "auth": {
+      "signature": "abc.def.ghi",
+      "trust_level": "high"
+    }
+  }
+}

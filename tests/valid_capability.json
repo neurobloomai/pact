@@ -1,0 +1,21 @@
+{
+  "agent_id": "agent_test",
+  "capabilities": [
+    {
+      "action": "create",
+      "parameters": {
+        "required": [
+          "title",
+          "start_time"
+        ],
+        "optional": [
+          "location"
+        ]
+      },
+      "response_format": {}
+    }
+  ],
+  "fallback_preferences": [
+    "query"
+  ]
+}

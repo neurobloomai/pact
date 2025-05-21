@@ -1,0 +1,11 @@
+{
+  "version": "0.1.0",
+  "intent": {
+    "parameters": {}
+  },
+  "metadata": {
+    "sender": {
+      "timestamp": "invalid-date-format"
+    }
+  }
+}
