@@ -1,11 +1,22 @@
-# 🧩 PACT Adapter MVP
+NeuroBloom.ai is building resilient infrastructure for the future of agent communication and coordination.
+
+We believe the next evolution of AI won't be dominated by monolithic models—but by networks of agents that understand intent, cooperate intelligently, and recover gracefully.
+
+Our open-source protocol, PACT (Protocol for Agent Collaboration & Transfer), lays the foundation for this future.
+
+We’re not just building software—we're building trust, interoperability, and invisible systems that last.
+
+Join us in shaping agent ecosystems that are resilient, ethical, and collaborative by design.
+
+
+# 🧩 PACT
 
 **Protocol for Agent Collaboration & Transfer (PACT)** — Building the universal, lightweight communication layer for intelligent agents.
 
 ![PACT Logo](docs/images/PACT_Protocol_Logo_Design.png)
 
 ---
-# 🧩 PACT Adapter MVP
+# 🧩 PACT
 
 ![Build Status](https://img.shields.io/github/actions/workflow/status/aknbloom/pact_adapter_mvp/python-ci.yml?branch=main)
 ![License](https://img.shields.io/github/license/aknbloom/pact_adapter_mvp)
