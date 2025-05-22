@@ -162,3 +162,34 @@ def test_agents():
 
 # Run test
 test_agents()
+
+# Adjusting test to strip out 'version' key before creating PACTMessage instances
+
+def test_agents_fixed():
+    agent = PACTProcessor()
+    agent.register_capability("schedule_meeting", sample_schedule_handler)
+
+    # Valid message
+    message_dict = {
+        "version": "0.1.0",
+        "intent": "schedule_meeting",
+        "metadata": {"time": "10:00 AM", "date": "2025-06-01"}
+    }
+    valid, msg = validate_message(message_dict)
+    assert valid, msg
+
+    # Remove version for instantiation
+    message = PACTMessage(intent=message_dict["intent"], metadata=message_dict["metadata"])
+    result = agent.process_intent(message)
+    print("Test Result (Valid):", result)
+
+    # Unknown intent, triggers fallback
+    message_dict["intent"] = "book_meeting"
+    message = PACTMessage(intent=message_dict["intent"], metadata=message_dict["metadata"])
+    result = agent.process_intent(message)
+    print("Test Result (Fallback):", result)
+
+
+# Run the fixed test
+test_agents_fixed()
+
