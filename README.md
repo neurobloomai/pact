@@ -168,6 +168,11 @@ See our development goals and priorities in the [Roadmap](docs/roadmap.md).
 
 ---
 
+## 🚀 Getting Started
+New to PACT? Begin with our [Quick Start Guide](docs/quick_start.md) for a 5-minute onboarding experience.
+
+---
+
 ## 🤝 Contributing
 
 We welcome contributions!
