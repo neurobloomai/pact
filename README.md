@@ -162,6 +162,12 @@ docker run -p 8000:8000 pact-adapter
 
 ---
 
+# PACT Protocol
+## 📍 Project Roadmap
+See our development goals and priorities in the [Roadmap](docs/roadmap.md).
+
+---
+
 ## 🤝 Contributing
 
 We welcome contributions!
