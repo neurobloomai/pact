@@ -173,6 +173,15 @@ New to PACT? Begin with our [Quick Start Guide](docs/quick_start.md) for a 5-min
 
 ---
 
+## 📚 Tutorials
+
+- [Quick Start Guide](docs/quick_start.md)
+- [Implementing Effective Fallbacks](docs/tutorials/implementing_effective_fallbacks.md)
+- [Advanced Capability Negotiation](docs/tutorials/advanced_capability_negotiation.md)
+- [Production Deployment Guide](docs/tutorials/production_deployment_guide.md)
+
+---
+
 ## 🤝 Contributing
 
 We welcome contributions!
