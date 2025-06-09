@@ -2,11 +2,17 @@ name: Publish to PyPI
 
 on:
   push:
-    tags:
-      - "v*"
+    branches:
+      - main
     paths:
       - "setup.py"
       - "pyproject.toml"
+
+  # Separate trigger block for tags
+  create:
+    tags:
+      - "v*"
+
 
 
 jobs:
