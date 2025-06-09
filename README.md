@@ -16,6 +16,15 @@ Join us in shaping agent ecosystems that are resilient, ethical, and collaborati
 ![PACT Logo](docs/images/PACT_Protocol_Logo_Design.png)
 
 ---
+## 🚀 PACT Protocol — Status & Releases
+
+[![PyPI](https://img.shields.io/pypi/v/pact-protocol?label=PACT%20Release&color=green)](https://pypi.org/project/pact-protocol) [![CI](https://github.com/neurobloomai/pact/actions/workflows/python-ci.yml/badge.svg)](https://github.com/neurobloomai/pact/actions/workflows/python-ci.yml) [![Publish to PyPI](https://github.com/neurobloomai/pact/actions/workflows/publish-to-pypi.yml/badge.svg)](https://github.com/neurobloomai/pact/actions/workflows/publish-to-pypi.yml)
+
+> ✅ CI/CD Enabled • Auto-Publishes to PyPI on Version Bumps  
+> 📦 Install via: `pip install pact-protocol`
+
+---
+
 # 🧩 PACT
 
 ![Build Status](https://img.shields.io/github/actions/workflow/status/aknbloom/pact_adapter_mvp/python-ci.yml?branch=main)
