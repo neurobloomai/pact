@@ -4,6 +4,9 @@ on:
   push:
     tags:
       - "v*"
+    paths:
+      - "setup.py"
+      - "pyproject.toml"
 
 jobs:
   build-and-publish:
