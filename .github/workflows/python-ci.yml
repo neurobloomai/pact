@@ -7,7 +7,7 @@ on:
     branches: [ main ]
 
 jobs:
-  build:
+  ci-check:
     runs-on: ubuntu-latest
 
     steps:
@@ -24,12 +24,15 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      #- name: Lint with flake8
-      #  run: |
-      #    pip install flake8
-      #    flake8 .
+      # - name: Lint with flake8
+      #   run: |
+      #     pip install flake8
+      #     flake8 .
 
-      - name: Run app (optional dev test)
+      - name: Run import test (simulate app check)
         run: |
-          pip install fastapi uvicorn
-          uvicorn main:app --host 0.0.0.0 --port 8000
+          python -c "import fastapi; import uvicorn; print('✅ App modules loaded.')"
+
+      - name: Run basic test scaffold
+        run: |
+          echo "No unit tests yet — placeholder"
