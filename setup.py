@@ -12,7 +12,7 @@ setuptools.setup(
     },
     
     name="pact-protocol",
-    version="0.1.11",
+    version="0.1.1",
     author="Neurobloom.ai",
     author_email="team@neurobloom.ai",
     description="PACT: Protocol for Agent Collaboration & Transfer",
