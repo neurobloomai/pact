@@ -4,15 +4,29 @@ Transform natural language into structured PACT protocol actions with 95.3% accu
 
 ## 🚀 Quick Start
 
-```bash
-# Install dependencies
+```
+# 1. Clone the repository
+git clone https://github.com/neurobloomai/pact
+cd pact/examples/semantic_intent_matching
+
+# 2. Quick automated setup (recommended)
+chmod +x setup.sh
+./setup.sh
+
+# 3. Or manual installation
 pip install -r requirements.txt
 
-# Run basic example
-python example_usage.py
+# 4. Try it out!
+python example_usage.py          # Interactive demo with test cases
+python advanced_example.py       # Production FastAPI server
+python scalable_pact_matcher.py  # High-performance FAISS version
 
-# Run production example
-python advanced_example.py
+# 5. Run tests
+pytest test_matcher.py -v
+
+# 6. Start building!
+# Import in your own projects:
+from pact_semantic_matcher import PACTSemanticMatcher
 ```
 
 ## 📁 Files Overview
@@ -86,3 +100,8 @@ Use `advanced_example.py` as your starting point:
 - Structured logging
 - Health checks
 - Graceful error handling
+
+--
+💡 Pro tip: The setup script handles virtual environments, dependency installation, and validates everything works - perfect for getting started in under 2 minutes!
+⚡ Ready to transform "show me revenue" into analytics.get_revenue_report? Jump into example_usage.py for an interactive demo! 🎯
+--
