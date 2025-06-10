@@ -18,10 +18,13 @@ Join us in shaping agent ecosystems that are resilient, ethical, and collaborati
 ---
 ## 🚀 PACT Protocol — Status & Releases
 
-[![PyPI](https://img.shields.io/pypi/v/pact-protocol?label=PACT%20Release&color=green)](https://pypi.org/project/pact-protocol) [![CI](https://github.com/neurobloomai/pact/actions/workflows/python-ci.yml/badge.svg)](https://github.com/neurobloomai/pact/actions/workflows/python-ci.yml) [![Publish to PyPI](https://github.com/neurobloomai/pact/actions/workflows/publish-to-pypi.yml/badge.svg)](https://github.com/neurobloomai/pact/actions/workflows/publish-to-pypi.yml)
+[![PyPI](https://img.shields.io/pypi/v/pact-protocol?label=PACT%20Release&color=green)](https://pypi.org/project/pact-protocol)
+[![CI](https://github.com/neurobloomai/pact/actions/workflows/python-ci.yml/badge.svg)](https://github.com/neurobloomai/pact/actions/workflows/python-ci.yml)
+[![Publish to PyPI](https://github.com/neurobloomai/pact/actions/workflows/publish-to-pypi.yml/badge.svg)](https://github.com/neurobloomai/pact/actions/workflows/publish-to-pypi.yml)
 
 > ✅ CI/CD Enabled • Auto-Publishes to PyPI on Version Bumps  
 > 📦 Install via: `pip install pact-protocol`
+
 
 ---
 
