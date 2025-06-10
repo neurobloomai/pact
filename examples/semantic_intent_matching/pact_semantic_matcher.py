@@ -78,3 +78,71 @@ class PACTSemanticMatcher:
                 "threshold": self.similarity_threshold,
                 "suggestion": "Please rephrase your request or use more specific terms"
             }
+
+
+class PACTProtocolHandler:
+    """Handles execution of PACT protocol actions"""
+    
+    def __init__(self):
+        self.semantic_matcher = PACTSemanticMatcher()
+        self._setup_default_intents()
+    
+    def _setup_default_intents(self):
+        """Setup common PACT protocol intents"""
+        intents = [
+            PACTIntent(
+                name="analytics_revenue",
+                protocol_action="analytics.get_revenue_report",
+                description="Get revenue and sales analytics data",
+                examples=[
+                    "show me revenue",
+                    "what are our sales numbers",
+                    "revenue report",
+                    "how much money did we make",
+                    "sales analytics"
+                ]
+            ),
+            PACTIntent(
+                name="support_tickets",
+                protocol_action="support.list_tickets",
+                description="List and manage customer support tickets",
+                examples=[
+                    "show support tickets",
+                    "customer issues",
+                    "help desk tickets",
+                    "support queue",
+                    "customer problems"
+                ]
+            ),
+            PACTIntent(
+                name="user_management",
+                protocol_action="users.list_active",
+                description="Manage and view user accounts",
+                examples=[
+                    "show users",
+                    "list customers",
+                    "user accounts",
+                    "who is online",
+                    "active users"
+                ]
+            ),
+            PACTIntent(
+                name="dashboard_view",
+                protocol_action="dashboard.display_main",
+                description="Display main dashboard and overview",
+                examples=[
+                    "show dashboard",
+                    "main screen",
+                    "overview",
+                    "home page",
+                    "control panel"
+                ]
+            )
+        ]
+        
+        for intent in intents:
+            self.semantic_matcher.add_intent(intent)
+    
+    def process_request(self, user_input: str) -> Dict:
+        """Process user request through PACT semantic matching"""
+        return self.semantic_matcher.execute_pact_action(user_input)
