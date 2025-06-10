@@ -223,3 +223,6 @@ For ideas, discussions, or collaborations:
 - Contact: founders@neurobloom.ai
 
 Together, let's build the protocol layer for agent collaboration. 🌍
+
+## 🎯 Case Studies
+- [Semantic Intent Matching](docs/case_studies/semantic_intent_matching.md) - Bridge natural language to PACT protocols
