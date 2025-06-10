@@ -100,8 +100,3 @@ Use `advanced_example.py` as your starting point:
 - Structured logging
 - Health checks
 - Graceful error handling
-
---
-💡 Pro tip: The setup script handles virtual environments, dependency installation, and validates everything works - perfect for getting started in under 2 minutes!
-⚡ Ready to transform "show me revenue" into analytics.get_revenue_report? Jump into example_usage.py for an interactive demo! 🎯
---
