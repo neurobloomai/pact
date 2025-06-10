@@ -32,3 +32,26 @@ class AdaptivePACTMatcher(PACTSemanticMatcher):
             self.similarity_threshold += 0.05  # More conservative
         elif false_positive_rate < 0.05:
             self.similarity_threshold -= 0.02  # More permissive
+
+@dataclass
+class ContextualPACTIntent(PACTIntent):
+    """PACT intent with contextual information"""
+    required_permissions: List[str] = None
+    context_tags: List[str] = None
+    time_sensitive: bool = False
+    
+class ContextualPACTMatcher(PACTSemanticMatcher):
+    """Context-aware PACT semantic matcher"""
+    
+    def find_best_match_with_context(self, user_input: str, user_context: Dict) -> Tuple[Optional[PACTIntent], float]:
+        """Find best match considering user context"""
+        intent, confidence = self.find_best_match(user_input)
+        
+        if intent and hasattr(intent, 'required_permissions'):
+            # Check permissions
+            user_permissions = user_context.get('permissions', [])
+            if intent.required_permissions:
+                if not all(perm in user_permissions for perm in intent.required_permissions):
+                    return None, 0.0  # No permission
+        
+        return intent, confidence
