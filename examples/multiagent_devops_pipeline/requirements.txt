@@ -1,0 +1,86 @@
+# PACT DevOps Pipeline Dependencies
+# =====================================
+
+# Core Framework
+fastapi>=0.100.0,<1.0.0               # Web framework for pipeline API
+uvicorn>=0.23.0,<1.0.0                # ASGI server
+pydantic>=2.0.0,<3.0.0                # Data validation and settings
+
+# Async & Concurrency
+asyncio-mqtt>=0.11.0,<1.0.0           # MQTT client for event handling
+aiohttp>=3.8.0,<4.0.0                 # Async HTTP client
+aiofiles>=23.0.0,<24.0.0              # Async file operations
+
+# Database & Caching
+redis>=4.5.0,<5.0.0                   # Pipeline state and caching
+sqlalchemy>=2.0.0,<3.0.0              # Database ORM
+alembic>=1.11.0,<2.0.0                # Database migrations
+asyncpg>=0.28.0,<1.0.0                # PostgreSQL async driver
+
+# Monitoring & Logging
+prometheus-client>=0.17.0,<1.0.0      # Metrics collection
+structlog>=23.0.0,<24.0.0             # Structured logging
+opentelemetry-api>=1.19.0,<2.0.0      # Distributed tracing
+opentelemetry-sdk>=1.19.0,<2.0.0      # Tracing implementation
+
+# DevOps Integration
+kubernetes>=27.0.0,<28.0.0            # Kubernetes API client
+docker>=6.1.0,<7.0.0                  # Docker API
+githubpy>=1.59.0,<2.0.0               # GitHub API
+python-gitlab>=3.15.0,<4.0.0          # GitLab API
+jenkinsapi>=0.3.11,<1.0.0             # Jenkins integration
+
+# Configuration & Environment
+python-dotenv>=1.0.0,<2.0.0           # Environment variables
+pyyaml>=6.0,<7.0                      # YAML configuration
+click>=8.1.0,<9.0.0                   # CLI interface
+rich>=13.0.0,<14.0.0                  # Rich terminal output
+
+# Security & Authentication
+cryptography>=41.0.0,<42.0.0          # Encryption and certificates
+pyjwt>=2.8.0,<3.0.0                   # JWT token handling
+httpx>=0.24.0,<1.0.0                  # HTTP client with auth
+
+# Testing Framework
+pytest>=7.0.0,<8.0.0                  # Testing framework
+pytest-asyncio>=0.21.0,<1.0.0         # Async testing
+pytest-mock>=3.11.0,<4.0.0            # Mocking utilities
+pytest-cov>=4.0.0,<5.0.0              # Coverage reporting
+
+# Code Quality
+black>=23.0.0,<24.0.0                 # Code formatting
+isort>=5.12.0,<6.0.0                  # Import sorting
+flake8>=6.0.0,<7.0.0                  # Linting
+mypy>=1.0.0,<2.0.0                    # Type checking
+
+# Optional: Cloud Providers
+# boto3>=1.28.0,<2.0.0                # AWS SDK
+# azure-identity>=1.13.0,<2.0.0       # Azure authentication
+# google-cloud-core>=2.3.0,<3.0.0     # Google Cloud SDK
+
+# Optional: Message Queues
+# celery>=5.3.0,<6.0.0                # Distributed task queue
+# kombu>=5.3.0,<6.0.0                 # Message queue abstraction
+
+# Optional: Advanced Monitoring
+# datadog>=0.47.0,<1.0.0              # DataDog integration
+# newrelic>=8.10.0,<9.0.0             # New Relic monitoring
+
+# PACT Protocol
+# pact-protocol>=0.1.0                # Your PACT package
+
+# =====================================
+# Installation Notes:
+#
+# Basic DevOps Pipeline:
+#   pip install -r requirements.txt
+#
+# With cloud providers:
+#   pip install -r requirements.txt boto3 azure-identity google-cloud-core
+#
+# Development setup:
+#   pip install -r requirements.txt pytest-mock pytest-cov
+#
+# Production deployment:
+#   pip install -r requirements.txt gunicorn
+# =====================================
