@@ -1,0 +1,214 @@
+# Dockerfile for PACT DevOps Pipeline
+FROM python:3.11-slim
+
+# Set working directory
+WORKDIR /app
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    git \
+    curl \
+    build-essential \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy requirements first for better caching
+COPY requirements.txt .
+
+# Install Python dependencies
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy application code
+COPY core_pipeline_orchestrator.py .
+COPY agent_implementations.py .
+COPY pipeline_configs.py .
+COPY devops_web_server.py .
+COPY example_usage_devops.py .
+
+# Create non-root user
+RUN useradd -m -u 1000 pact && chown -R pact:pact /app
+USER pact
+
+# Expose port
+EXPOSE 8000
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+    CMD curl -f http://localhost:8000/health || exit 1
+
+# Default command
+CMD ["python", "devops_web_server.py"]
+
+---
+
+# docker-compose.yml for complete PACT DevOps setup
+version: '3.8'
+
+services:
+  # PACT Pipeline Server
+  pact-pipeline:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - REDIS_URL=redis://redis:6379
+      - LOG_LEVEL=info
+      - ENVIRONMENT=docker
+    depends_on:
+      - redis
+    volumes:
+      - ./logs:/app/logs
+    restart: unless-stopped
+    networks:
+      - pact-network
+
+  # Redis for pipeline state management
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes
+    restart: unless-stopped
+    networks:
+      - pact-network
+
+  # Prometheus for metrics collection
+  prometheus:
+    image: prom/prometheus:latest
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--storage.tsdb.retention.time=200h'
+      - '--web.enable-lifecycle'
+    restart: unless-stopped
+    networks:
+      - pact-network
+
+  # Grafana for visualization
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./grafana/dashboards:/etc/grafana/provisioning/dashboards
+      - ./grafana/datasources:/etc/grafana/provisioning/datasources
+    restart: unless-stopped
+    networks:
+      - pact-network
+
+  # PostgreSQL for persistent storage (optional)
+  postgres:
+    image: postgres:15-alpine
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=pact_pipelines
+      - POSTGRES_USER=pact
+      - POSTGRES_PASSWORD=pact_password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
+    networks:
+      - pact-network
+
+volumes:
+  redis_data:
+  prometheus_data:
+  grafana_data:
+  postgres_data:
+
+networks:
+  pact-network:
+    driver: bridge
+
+---
+
+# prometheus.yml - Prometheus configuration
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+rule_files:
+  # - "first_rules.yml"
+  # - "second_rules.yml"
+
+scrape_configs:
+  - job_name: 'pact-pipeline'
+    static_configs:
+      - targets: ['pact-pipeline:8000']
+    metrics_path: '/metrics'
+    scrape_interval: 10s
+
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets:
+          # - alertmanager:9093
+
+---
+
+# .dockerignore
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.venv/
+pip-log.txt
+pip-delete-this-directory.txt
+.tox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.log
+.git
+.mypy_cache
+.pytest_cache
+.hypothesis
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Logs
+logs/
+*.log
+
+# Database
+*.db
+*.sqlite3
+
+# Temporary files
+tmp/
+temp/
