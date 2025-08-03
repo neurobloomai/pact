@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PACT Intent Hierarchy - Live Demo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f1419 0%, #1a2332 100%);
+            color: #ffffff;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #00d4ff, #00ff88);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header p {
+            font-size: 1.2em;
+            color: #a0aec0;
+        }
+
+        .demo-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        .intent-layers {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 25px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .coordination-panel {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 25px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .layer {
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-left: 4px solid #4fd1c7;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .layer.processing {
+            border-left-color: #ffd700;
+            animation: pulse 2s infinite;
+        }
+
+        .layer.completed {
+            border-left-color: #00ff88;
+            background: rgba(0, 255, 136, 0.1);
+        }
+
+        .layer.failed {
+            border-left-color: #ff4757;
+            background: rgba(255, 71, 87, 0.1);
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(255, 215, 0, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(255, 215, 0, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 215, 0, 0); }
+        }
+
+        .layer-title {
+            font-size: 1.3em;
+            font-weight: bold;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .layer-status {
+            font-size: 0.9em;
+            padding: 5px 12px;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .layer-details {
+            font-size: 0.9em;
+            color: #a0aec0;
+            margin-top: 10px;
+        }
+
+        .agent-card {
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .agent-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .agent-name {
+            font-weight: bold;
+            color: #00d4ff;
+        }
+
+        .agent-status {
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 0.8em;
+            background: rgba(0, 255, 136, 0.2);
+            color: #00ff88;
+        }
+
+        .energy-meter {
+            width: 100%;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+
+        .energy-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ff4757, #ffa502, #00ff88);
+            border-radius: 10px;
+            transition: width 1s ease;
+            position: relative;
+        }
+
+        .energy-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .metric-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .metric-value {
+            font-size: 2em;
+            font-weight: bold;
+            color: #00d4ff;
+        }
+
+        .metric-label {
+            font-size: 0.9em;
+            color: #a0aec0;
+            margin-top: 5px;
+        }
+
+        .control-panel {
+            margin-bottom: 25px;
+        }
+
+        .demo-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: linear-gradient(45deg, #00d4ff, #0099cc);
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 212, 255, 0.3);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #00d4ff, #00ff88);
+            border-radius: 3px;
+            transition: width 0.5s ease;
+        }
+
+        .log-container {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            padding: 15px;
+            height: 200px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            margin-top: 15px;
+        }
+
+        .log-entry {
+            margin-bottom: 5px;
+            padding: 3px 0;
+        }
+
+        .log-timestamp {
+            color: #4fd1c7;
+            margin-right: 10px;
+        }
+
+        .log-success {
+            color: #00ff88;
+        }
+
+        .log-error {
+            color: #ff4757;
+        }
+
+        .log-info {
+            color: #00d4ff;
+        }
+
+        .scenario-selector {
+            margin-bottom: 20px;
+        }
+
+        .scenario-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .scenario-card:hover {
+            border-color: #00d4ff;
+        }
+
+        .scenario-card.selected {
+            border-color: #00ff88;
+            background: rgba(0, 255, 136, 0.1);
+        }
+
+        .scenario-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .scenario-description {
+            font-size: 0.9em;
+            color: #a0aec0;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🚀 PACT Intent Hierarchy</h1>
+        <p>Live Demo - Multi-Agent Coordination Under Pressure</p>
+    </div>
+
+    <div class="demo-container">
+        <!-- Left Panel: Intent Layers -->
+        <div class="intent-layers">
+            <h2>🧠 4-Layer Intent Hierarchy</h2>
+            
+            <div class="layer" id="layer1">
+                <div class="layer-title">
+                    <span>🔍 Layer 1: Individual Intent</span>
+                    <div class="layer-status" id="status1">Pending</div>
+                </div>
+                <div class="layer-details" id="details1">
+                    Validating individual agent objectives and constraints...
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress1" style="width: 0%"></div>
+                </div>
+            </div>
+
+            <div class="layer" id="layer2">
+                <div class="layer-title">
+                    <span>🤝 Layer 2: Co-Intent</span>
+                    <div class="layer-status" id="status2">Pending</div>
+                </div>
+                <div class="layer-details" id="details2">
+                    Establishing shared understanding between agents...
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress2" style="width: 0%"></div>
+                </div>
+            </div>
+
+            <div class="layer" id="layer3">
+                <div class="layer-title">
+                    <span>🎯 Layer 3: Core Intent</span>
+                    <div class="layer-status" id="status3">Pending</div>
+                </div>
+                <div class="layer-details" id="details3">
+                    Validating alignment with mission objectives...
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress3" style="width: 0%"></div>
+                </div>
+            </div>
+
+            <div class="layer" id="layer4">
+                <div class="layer-title">
+                    <span>⚡ Layer 4: Collab Intent</span>
+                    <div class="layer-status" id="status4">Pending</div>
+                </div>
+                <div class="layer-details" id="details4">
+                    Optimizing partnership energy and coordination...
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress4" style="width: 0%"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Panel: Coordination Status -->
+        <div class="coordination-panel">
+            <h2>⚡ Coordination Dashboard</h2>
+            
+            <div class="control-panel">
+                <div class="scenario-selector">
+                    <h3>Select Demo Scenario:</h3>
+                    <div class="scenario-card selected" data-scenario="satellite">
+                        <div class="scenario-title">🛰️ Emergency Satellite Coordination</div>
+                        <div class="scenario-description">Natural disaster response with backup coordination</div>
+                    </div>
+                    <div class="scenario-card" data-scenario="drone">
+                        <div class="scenario-title">🚁 Drone Intelligence Handoff</div>
+                        <div class="scenario-description">Reconnaissance data transfer to ground control</div>
+                    </div>
+                    <div class="scenario-card" data-scenario="optimization">
+                        <div class="scenario-title">🔄 Partnership Optimization</div>
+                        <div class="scenario-description">Dynamic agent pairing based on energy scores</div>
+                    </div>
+                </div>
+
+                <div class="demo-buttons">
+                    <button class="btn" id="startDemo">▶️ Start Coordination</button>
+                    <button class="btn" id="resetDemo">🔄 Reset Demo</button>
+                    <button class="btn" id="pauseDemo" disabled>⏸️ Pause</button>
+                </div>
+            </div>
+
+            <div class="agent-card">
+                <div class="agent-header">
+                    <div class="agent-name" id="agentA">Agent A: satellite_001</div>
+                    <div class="agent-status">Active</div>
+                </div>
+                <div>Energy Score: <span id="energyA">0.85</span>/1.0</div>
+                <div class="energy-meter">
+                    <div class="energy-fill" id="energyBarA" style="width: 85%"></div>
+                </div>
+                <div style="font-size: 0.9em; color: #a0aec0;">
+                    Platform: defense_network | Capabilities: transmission, orbit_control, encryption
+                </div>
+            </div>
+
+            <div class="agent-card">
+                <div class="agent-header">
+                    <div class="agent-name" id="agentB">Agent B: satellite_002</div>
+                    <div class="agent-status">Active</div>
+                </div>
+                <div>Energy Score: <span id="energyB">0.78</span>/1.0</div>
+                <div class="energy-meter">
+                    <div class="energy-fill" id="energyBarB" style="width: 78%"></div>
+                </div>
+                <div style="font-size: 0.9em; color: #a0aec0;">
+                    Platform: defense_network | Capabilities: reception, backup_coverage, encryption
+                </div>
+            </div>
+
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <div class="metric-value" id="partnershipEnergy">0.82</div>
+                    <div class="metric-label">Partnership Energy</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value" id="processingTime">0.387</div>
+                    <div class="metric-label">Processing Time (s)</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value" id="successRate">100%</div>
+                    <div class="metric-label">Success Rate</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value" id="totalCoordinations">0</div>
+                    <div class="metric-label">Total Coordinations</div>
+                </div>
+            </div>
+
+            <div class="log-container" id="logContainer">
+                <div class="log-entry">
+                    <span class="log-timestamp">[00:00:00]</span>
+                    <span class="log-info">PACT Demo Ready - Select scenario and click Start Coordination</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Demo state management
+        let currentScenario = 'satellite';
+        let isRunning = false;
+        let currentStep = 0;
+        let totalCoordinations = 0;
+
+        // Scenario configurations
+        const scenarios = {
+            satellite: {
+                agentA: { name: 'satellite_001', platform: 'defense_network', energy: 0.85 },
+                agentB: { name: 'satellite_002', platform: 'defense_network', energy: 0.78 },
+                partnershipEnergy: 0.82,
+                steps: [
+                    { layer: 1, details: 'Validating satellite objectives: emergency coverage + backup relay', duration: 1500 },
+                    { layer: 2, details: 'Establishing shared emergency communication protocol', duration: 1200 },
+                    { layer: 3, details: 'Confirming alignment with disaster response mission', duration: 1000 },
+                    { layer: 4, details: 'Optimizing satellite-to-satellite coordination energy', duration: 1300 }
+                ]
+            },
+            drone: {
+                agentA: { name: 'drone_001', platform: 'autonomous_drone', energy: 0.72 },
+                agentB: { name: 'ground_001', platform: 'ground_station', energy: 0.95 },
+                partnershipEnergy: 0.76,
+                steps: [
+                    { layer: 1, details: 'Validating drone intelligence transfer + ground processing objectives', duration: 1400 },
+                    { layer: 2, details: 'Establishing secure data burst communication protocol', duration: 1600 },
+                    { layer: 3, details: 'Confirming security clearance and mission alignment', duration: 1100 },
+                    { layer: 4, details: 'Optimizing cross-platform coordination efficiency', duration: 1200 }
+                ]
+            },
+            optimization: {
+                agentA: { name: 'agent_optimal', platform: 'multi_platform', energy: 0.93 },
+                agentB: { name: 'agent_selected', platform: 'multi_platform', energy: 0.89 },
+                partnershipEnergy: 0.91,
+                steps: [
+                    { layer: 1, details: 'Testing multiple agent pairing combinations', duration: 1800 },
+                    { layer: 2, details: 'Comparing communication protocol efficiencies', duration: 1500 },
+                    { layer: 3, details: 'Evaluating mission alignment across partnerships', duration: 1300 },
+                    { layer: 4, details: 'Selecting optimal partnership based on energy scores', duration: 1700 }
+                ]
+            }
+        };
+
+        // UI Elements
+        const startBtn = document.getElementById('startDemo');
+        const resetBtn = document.getElementById('resetDemo');
+        const pauseBtn = document.getElementById('pauseDemo');
+        const logContainer = document.getElementById('logContainer');
+
+        // Event listeners
+        startBtn.addEventListener('click', startDemo);
+        resetBtn.addEventListener('click', resetDemo);
+        pauseBtn.addEventListener('click', pauseDemo);
+
+        // Scenario selection
+        document.querySelectorAll('.scenario-card').forEach(card => {
+            card.addEventListener('click', () => {
+                if (isRunning) return;
+                
+                document.querySelectorAll('.scenario-card').forEach(c => c.classList.remove('selected'));
+                card.classList.add('selected');
+                currentScenario = card.dataset.scenario;
+                updateScenarioDisplay();
+            });
+        });
+
+        function updateScenarioDisplay() {
+            const scenario = scenarios[currentScenario];
+            
+            // Update agent information
+            document.getElementById('agentA').textContent = `Agent A: ${scenario.agentA.name}`;
+            document.getElementById('agentB').textContent = `Agent B: ${scenario.agentB.name}`;
+            document.getElementById('energyA').textContent = scenario.agentA.energy.toFixed(2);
+            document.getElementById('energyB').textContent = scenario.agentB.energy.toFixed(2);
+            document.getElementById('energyBarA').style.width = `${scenario.agentA.energy * 100}%`;
+            document.getElementById('energyBarB').style.width = `${scenario.agentB.energy * 100}%`;
+            document.getElementById('partnershipEnergy').textContent = scenario.partnershipEnergy.toFixed(2);
+        }
+
+        function addLog(message, type = 'info') {
+            const timestamp = new Date().toLocaleTimeString();
+            const logEntry = document.createElement('div');
+            logEntry.className = 'log-entry';
+            logEntry.innerHTML = `
+                <span class="log-timestamp">[${timestamp}]</span>
+                <span class="log-${type}">${message}</span>
+            `;
+            logContainer.appendChild(logEntry);
+            logContainer.scrollTop = logContainer.scrollHeight;
+        }
+
+        async function startDemo() {
+            if (isRunning) return;
+            
+            isRunning = true;
+            currentStep = 0;
+            startBtn.disabled = true;
+            pauseBtn.disabled = false;
+            
+            addLog(`🚀 Starting ${currentScenario} coordination demo...`, 'info');
+            addLog('🔍 Initializing PACT 4-Layer Intent Hierarchy', 'info');
+            
+            const scenario = scenarios[currentScenario];
+            
+            // Reset all layers
+            for (let i = 1; i <= 4; i++) {
+                const layer = document.getElementById(`layer${i}`);
+                const status = document.getElementById(`status${i}`);
+                const progress = document.getElementById(`progress${i}`);
+                
+                layer.className = 'layer';
+                status.textContent = 'Pending';
+                progress.style.width = '0%';
+            }
+            
+            // Process each layer
+            for (let i = 0; i < scenario.steps.length; i++) {
+                if (!isRunning) break;
+                
+                const step = scenario.steps[i];
+                const layerNum = step.layer;
+                const layer = document.getElementById(`layer${layerNum}`);
+                const status = document.getElementById(`status${layerNum}`);
+                const details = document.getElementById(`details${layerNum}`);
+                const progress = document.getElementById(`progress${layerNum}`);
+                
+                // Start processing
+                layer.className = 'layer processing';
+                status.textContent = 'Processing';
+                details.textContent = step.details;
+                addLog(`⚡ Layer ${layerNum}: ${step.details}`, 'info');
+                
+                // Animate progress
+                await animateProgress(progress, step.duration);
+                
+                if (!isRunning) break;
+                
+                // Complete layer
+                layer.className = 'layer completed';
+                status.textContent = 'Completed';
+                addLog(`✅ Layer ${layerNum}: Validation successful`, 'success');
+                
+                await sleep(500);
+            }
+            
+            if (isRunning) {
+                // Demo completion
+                totalCoordinations++;
+                document.getElementById('totalCoordinations').textContent = totalCoordinations;
+                document.getElementById('processingTime').textContent = (Math.random() * 0.5 + 0.2).toFixed(3);
+                
+                addLog('🎉 Coordination completed successfully!', 'success');
+                addLog(`⚡ Partnership energy: ${scenario.partnershipEnergy}`, 'success');
+                addLog('🚀 Agents coordinated and mission ready', 'success');
+            }
+            
+            isRunning = false;
+            startBtn.disabled = false;
+            pauseBtn.disabled = true;
+        }
+
+        function pauseDemo() {
+            isRunning = false;
+            pauseBtn.disabled = true;
+            startBtn.disabled = false;
+            addLog('⏸️ Demo paused by user', 'info');
+        }
+
+        function resetDemo() {
+            isRunning = false;
+            currentStep = 0;
+            startBtn.disabled = false;
+            pauseBtn.disabled = true;
+            
+            // Reset all layers
+            for (let i = 1; i <= 4; i++) {
+                const layer = document.getElementById(`layer${i}`);
+                const status = document.getElementById(`status${i}`);
+                const details = document.getElementById(`details${i}`);
+                const progress = document.getElementById(`progress${i}`);
+                
+                layer.className = 'layer';
+                status.textContent = 'Pending';
+                progress.style.width = '0%';
+                
+                // Reset details text
+                const defaultDetails = [
+                    'Validating individual agent objectives and constraints...',
+                    'Establishing shared understanding between agents...',
+                    'Validating alignment with mission objectives...',
+                    'Optimizing partnership energy and coordination...'
+                ];
+                details.textContent = defaultDetails[i-1];
+            }
+            
+            addLog('🔄 Demo reset - Ready for new coordination', 'info');
+        }
+
+        async function animateProgress(progressBar, duration) {
+            const steps = 20;
+            const stepDuration = duration / steps;
+            
+            for (let i = 0; i <= steps; i++) {
+                if (!isRunning) break;
+                progressBar.style.width = `${(i / steps) * 100}%`;
+                await sleep(stepDuration);
+            }
+        }
+
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+        // Initialize display
+        updateScenarioDisplay();
+        addLog('🚀 PACT Visual Demo initialized and ready', 'success');
+        addLog('💡 Select a scenario and click "Start Coordination"', 'info');
+    </script>
+</body>
+</html>
