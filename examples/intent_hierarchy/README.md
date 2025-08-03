@@ -648,7 +648,7 @@ curl http://localhost:8000/pentagon/reassignment-history
 ### **Technical Support:**
 - **Classification**: RESTRICTED
 - **Contact**: Pentagon Systems Integration Office
-- **Email**: intent-hierarchy-support@defense.gov
+- **Email**: intent-hierarchy-support@defense1.gov
 - **Secure Phone**: +1-703-XXX-XXXX
 
 ### **Documentation:**
