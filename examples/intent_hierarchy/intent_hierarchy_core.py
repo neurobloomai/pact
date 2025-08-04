@@ -36,12 +36,12 @@ class IntentStatus(str, Enum):
     COMPLETED = "completed"
 
 class CoordinationResult(str, Enum):
-    SUCCESS = "success"
+    SUCCESS = "SUCCESS"
     FAILED_L1_VALIDATION = "failed_individual_intent"
     FAILED_L2_CONSENSUS = "failed_co_intent"
     FAILED_L3_ALIGNMENT = "failed_core_intent"
     FAILED_L4_OPTIMIZATION = "failed_collab_intent"
-    ENERGY
+    ENERGY = "ENERGY"
 
 @dataclass
 class Agent:
