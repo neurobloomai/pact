@@ -1,4 +1,3 @@
-cat > pact_cli_mock_fixed.py << 'EOF'
 # pact_cli_mock.py
 import json
 from flask import Flask, request, jsonify
