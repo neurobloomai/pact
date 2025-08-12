@@ -1,3 +1,4 @@
+cat > pact_cli_mock_fixed.py << 'EOF'
 # pact_cli_mock.py
 import json
 from flask import Flask, request, jsonify
@@ -19,12 +20,14 @@ AGENT_CAPABILITIES = {
 def match_capabilities(action, parameters):
     best_match = None
     best_score = 0
+    
     for agent, actions in AGENT_CAPABILITIES.items():
         if action in actions:
             required_params = set(actions[action])
             provided_params = set(parameters.keys())
             matched_params = required_params & provided_params
             score = len(matched_params) / len(required_params)
+            
             if score > best_score:
                 best_score = score
                 best_match = {
@@ -33,15 +36,17 @@ def match_capabilities(action, parameters):
                     "match_score": round(score, 2),
                     "missing_params": list(required_params - provided_params)
                 }
+    
     return best_match
 
-@app.route("/negotiate", methods=[POST])
+@app.route("/negotiate", methods=["POST"])
 def negotiate():
     data = request.get_json()
     action = data.get("action")
     parameters = data.get("parameters", {})
-
+    
     result = match_capabilities(action, parameters)
+    
     if result:
         return jsonify({
             "status": "matched" if result['match_score'] == 1.0 else "partial",
@@ -59,3 +64,4 @@ def index():
 
 if __name__ == "__main__":
     app.run(debug=True, port=8000)
+EOF
