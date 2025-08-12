@@ -1,3 +1,7 @@
+# Stop your current server (CTRL+C in the server terminal)
+# Then replace the entire file:
+
+cat > pact_cli_mock.py << 'EOF'
 # pact_cli_mock.py
 import json
 from flask import Flask, request, jsonify
@@ -57,9 +61,54 @@ def negotiate():
             "message": "No matching capabilities found"
         }), 404
 
+@app.route("/translate", methods=["POST"])
+def translate():
+    data = request.get_json()
+    
+    # Extract sender and recipient platforms
+    sender_platform = data.get("sender", {}).get("platform", "unknown")
+    recipient_platform = data.get("recipient", {}).get("platform", "unknown")
+    
+    # Extract payload
+    payload = data.get("payload", {})
+    original_intent = payload.get("intent", "")
+    entities = payload.get("entities", {})
+    text = payload.get("text", "")
+    
+    # Simple intent translation mapping
+    intent_translations = {
+        "check_order_status": "order.lookup",
+        "schedule_meeting": "calendar.create_event", 
+        "cancel_order": "order.cancel",
+        "book_appointment": "booking.schedule",
+        "get_weather": "weather.current",
+        "send_message": "messaging.send"
+    }
+    
+    # Translate intent
+    translated_intent = intent_translations.get(original_intent, f"translated.{original_intent}")
+    
+    # Build response
+    response = {
+        "translated_message": {
+            "intent": translated_intent,
+            "entities": entities,
+            "text": text,
+            "confidence": 0.95
+        },
+        "translation_metadata": {
+            "source_platform": sender_platform,
+            "target_platform": recipient_platform,
+            "translation_time_ms": 45,
+            "translation_method": "intent_mapping"
+        }
+    }
+    
+    return jsonify(response)
+
 @app.route("/")
 def index():
-    return "PACT Capability Negotiation Mock API"
+    return "PACT Mock API - Capability Negotiation & Intent Translation"
 
 if __name__ == "__main__":
     app.run(debug=True, port=8000)
