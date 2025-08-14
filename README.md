@@ -1,228 +1,378 @@
-NeuroBloom.ai is building resilient infrastructure for the future of agent communication and coordination.
+# PACT Protocol
+## Protocol for Agent Collaboration & Transfer
 
-We believe the next evolution of AI won't be dominated by monolithic models—but by networks of agents that understand intent, cooperate intelligently, and recover gracefully.
-
-Our open-source protocol, PACT (Protocol for Agent Collaboration & Transfer), lays the foundation for this future.
-
-We’re not just building software—we're building trust, interoperability, and invisible systems that last.
-
-Join us in shaping agent ecosystems that are resilient, ethical, and collaborative by design.
-
-
-# 🧩 PACT
-
-**Protocol for Agent Collaboration & Transfer (PACT)** — Building the universal, lightweight communication layer for intelligent agents.
-
-![PACT Logo](docs/images/PACT_Protocol_Logo_Design.png)
-
----
-## 🚀 PACT Protocol — Status & Releases
-
-[![PyPI](https://img.shields.io/pypi/v/pact-protocol?label=PACT%20Release&color=green)](https://pypi.org/project/pact-protocol)
-[![CI](https://github.com/neurobloomai/pact/actions/workflows/python-ci.yml/badge.svg)](https://github.com/neurobloomai/pact/actions/workflows/python-ci.yml)
-[![Publish to PyPI](https://github.com/neurobloomai/pact/actions/workflows/publish-to-pypi.yml/badge.svg)](https://github.com/neurobloomai/pact/actions/workflows/publish-to-pypi.yml)
-
-> ✅ CI/CD Enabled • Auto-Publishes to PyPI on Version Bumps  
-> 📦 Install via: `pip install pact-protocol`
-
+**Building the universal, lightweight communication layer for intelligent agents.**
 
 ---
 
-# 🧩 PACT
+## Why PACT?
 
-![Build Status](https://img.shields.io/github/actions/workflow/status/aknbloom/pact_adapter_mvp/python-ci.yml?branch=main)
-![License](https://img.shields.io/github/license/aknbloom/pact_adapter_mvp)
-![Issues](https://img.shields.io/github/issues/aknbloom/pact_adapter_mvp)
-![PRs](https://img.shields.io/github/issues-pr/aknbloom/pact_adapter_mvp)
-![Last Commit](https://img.shields.io/github/last-commit/aknbloom/pact_adapter_mvp)
+AI agents can't collaborate — because they don't speak the same language. We built PACT, an open-source protocol to fix that.
 
----
+**The Problem:**
+- Your Dialogflow agent says "check_order_status"
+- Your Rasa agent expects "order.lookup"  
+- Your custom AI agent wants "find_my_order"
+- **Result:** Weeks of custom integration work for every connection
 
-## 🌍 Vision
-
-In an increasingly agent-driven world, PACT provides a simple, open, and scalable protocol for **intent translation** and **agent interoperability** — enabling diverse AI agents, platforms, and services to collaborate seamlessly.
-
-> "Let every agent have its mind... PACT translates their intents."
->
-Why PACT Matters?:
-
-PACT exists to replace confusion with clarity. To transform fragmented systems into collaborative ecosystems. So builders can spend less time duct-taping intent and more time building tools that matter.
+**PACT Solution:**
+*"Let every agent have its mind... PACT translates their intents."*
 
 ---
 
-## 🌍 Current Protocol Landscape at a Glance
+## What is PACT?
 
-| Protocol | Focus          | Type                  | Owned By       | Strength                            |
-|----------|----------------|-----------------------|----------------|--------------------------------------|
-| **MCP** (Model Context Protocol) | App ↔ Model     | Vertical              | Anthropic       | Context & Tool Enrichment            |
-| **A2A** (Agent2Agent)            | Agent ↔ Agent   | Horizontal            | Google          | Multi-agent Coordination             |
-| **PACT** (Protocol for Agent Collaboration & Transfer) | Agent ↔ Agent | Horizontal + Middleware | **Vendor-neutral** | **Intent Translation & Interop**     |
+PACT provides a simple, open, and scalable protocol for intent translation and agent interoperability — enabling diverse AI agents, platforms, and services to collaborate seamlessly.
+
+### Protocol Positioning
+
+| Protocol | Focus | Type | Owned By | Strength |
+|----------|-------|------|----------|----------|
+| **PACT** | Agent ↔ Agent | Horizontal + Middleware | **Vendor-neutral** | **Intent Translation & Interop** |
+| MCP | App ↔ Model | Vertical | Anthropic | Context & Tool Enrichment |
+| A2A | Agent ↔ Agent | Horizontal | - | Multi-agent Coordination |
+
+### PACT Advantages
+
+| Feature | PACT | MCP | A2A |
+|---------|------|-----|-----|
+| **Focus** | Intent translation & platform adaptation | Model-to-tool communication | Agent-to-agent collaboration |
+| **Complexity** | **Lightweight** | Medium | Comprehensive |
+| **ML Integration** | **Built-in** | Limited | Optional |
+| **Implementation** | **Simple** | Complex | Complex |
+| **Use Case** | **Cross-platform messaging** | Tool augmentation | Complex interactions |
 
 ---
 
-## 🔍 How PACT Compares to Other Protocols
+## Quick Start
 
-| Feature            | **PACT**                            | **MCP** (Model Context Protocol) | **A2A** (Agent-to-Agent)         |
-|--------------------|-------------------------------------|----------------------------------|----------------------------------|
-| **Focus**          | Intent translation & platform adaptation | Model-to-tool communication     | Agent-to-agent collaboration     |
-| **Complexity**     | Lightweight                         | Medium                           | Comprehensive                    |
-| **ML Integration** | Built-in                            | Limited                          | Optional                         |
-| **Error Handling** | Extensive                           | Basic                            | Extensive                        |
-| **Implementation** | Simple                              | Complex                          | Complex                          |
-| **Use Case**       | Cross-platform messaging            | Tool augmentation                | Complex agent interactions       |
-
-
-## 🚀 Quickstart
-
-### Installation
-
+### Installation & Setup
 ```bash
-git clone https://github.com/aknbloom/pact_adapter_mvp.git
-cd pact_adapter_mvp
-pip install -r requirements.txt
-uvicorn main:app --reload
+# Clone the repository
+git clone https://github.com/neurobloomai/pact.git
+cd pact
+
+# Install dependencies
+pip install flask
+
+# Start the PACT server
+python main_server.py
 ```
 
----
+**Server starts on:** `http://127.0.0.1:8000`
 
-### Usage
+### Basic Usage
 
-Send a POST request to the `/translate` endpoint:
-
+#### Intent Translation
 ```bash
-curl -X POST http://localhost:8000/translate \
-  -H 'Content-Type: application/json' \
-  -d '{
-    "pact_version": "0.1",
-    "message_id": "abc123",
-    "timestamp": "2025-04-14T12:00:00Z",
-    "sender": { "agent_id": "agent-A", "platform": "Dialogflow" },
-    "recipient": { "agent_id": "agent-B", "platform": "Rasa" },
-    "session": { "session_id": "xyz-123", "context": {} },
-    "payload": {
-      "intent": "check_order_status",
-      "entities": { "order_id": "A123456" },
-      "text": "Where is my order?"
-    }
-  }'
+curl -X POST http://127.0.0.1:8000/translate \
+-H 'Content-Type: application/json' \
+-d '{
+  "sender": {"platform": "Dialogflow"},
+  "recipient": {"platform": "Rasa"},
+  "payload": {
+    "intent": "check_order_status",
+    "entities": {"order_id": "A123456"},
+    "text": "Where is my order?"
+  }
+}'
 ```
 
-Example Response:
-
+**Response:**
 ```json
 {
   "translated_message": {
     "intent": "order.lookup",
-    "entities": {
-      "order_id": "A123456"
-    },
-    "text": "Where is my order?"
+    "entities": {"order_id": "A123456"},
+    "text": "Where is my order?",
+    "confidence": 0.95
+  },
+  "translation_metadata": {
+    "source_platform": "Dialogflow",
+    "target_platform": "Rasa",
+    "translation_time_ms": 45
   }
+}
+```
+
+#### Capability Negotiation
+```bash
+curl -X POST http://127.0.0.1:8000/negotiate \
+-H 'Content-Type: application/json' \
+-d '{
+  "action": "create",
+  "parameters": {
+    "title": "Demo Meeting",
+    "start_time": "2025-08-12T10:00:00Z",
+    "participants": ["alice", "bob"]
+  }
+}'
+```
+
+**Response:**
+```json
+{
+  "result": {
+    "agent_id": "agent_calendar",
+    "action": "create",
+    "match_score": 1.0,
+    "missing_params": []
+  },
+  "status": "matched"
 }
 ```
 
 ---
 
-## 🧩 System Architecture
-
 ## Architecture
 
-PACT As a Translation Layer
+### Core Components
+- **PACT Gateway:** Validates incoming message envelope format
+- **Intent Translator:** Maps between different intent naming formats
+- **Capability Matcher:** Finds appropriate agents for actions
+- **Agent Router:** Routes messages to target agents
+- **Response Handler:** Wraps responses in standard PACT envelope
 
-![PACT As a Translation Layer](docs/images/PACT_As_a_Translation_Layer.png)
+### Message Flow
+```
+Agent A → PACT Gateway → Intent Translator → Agent Router → Agent B
+       ← Response Handler ← Adapter Layer ← Target Agent ←
+```
 
-The following diagram illustrates the PACT message flow:
+### Resilient Design
+- **Built-in fallbacks** for low-confidence intents
+- **Graceful degradation** for adapter failures
+- **Timeout handling** with automatic retry
+- **Platform-agnostic** architecture
 
-![PACT Flow Diagram](docs/images/pact_agent_resilience_architecture.png)
-
-- **PACT Gateway** → **ML Intent Classifier** → **Intent Translator** → **Agent Router** → **Adapter Layer** → **Target Agent** → **Response Handler**
-- Resilient design with fallbacks for low-confidence intents, adapter failures, and timeouts.
-
-Key components:
-- **PACT Gateway**: Validates incoming message envelope format
-- **ML Intent Classifier**: Determines intent with confidence score
-- **Intent Translator**: Maps between different intent naming formats
-- **Agent Router**: Selects appropriate target agent
-- **Adapter Layer**: Converts to target platform's message format
-- **Target Agent**: Processes the intent and generates a response
-- **Response Handler**: Wraps response in standard PACT envelope
-- **Resilient Design**: Built-in fallback mechanisms for low-confidence intents, timeouts, and adapter failures
-- **Platform-Agnostic**: Works with any conversational AI platform
 ---
 
-Protocol design isn't just about what works — it's about what fails gracefully and secures trust at every layer.
-How PACT's security and resilience loop works (e.g., Inputs → Threat Modeling → Protocol Refinement → Resilience Mechanisms)?
+## Examples & Use Cases
 
-![PACT’s-security-focuse](docs/images/PACT-security-focused-technical-development-loop.png)
-
-## 📦 Docker Deployment
-
+### 🏢 HR Workflows
+**Complete employee lifecycle automation**
 ```bash
-docker build -t pact-adapter .
-docker run -p 8000:8000 pact-adapter
+# Start employee onboarding workflow
+curl -X POST http://127.0.0.1:8000/hr/workflows/onboarding \
+-H 'Content-Type: application/json' \
+-d '{
+  "employee_name": "Alice Johnson",
+  "email": "alice.johnson@company.com",
+  "department": "Engineering",
+  "start_date": "2025-09-01",
+  "manager": "bob.smith@company.com",
+  "position": "Senior Software Engineer",
+  "salary": 125000
+}'
+```
+
+**Coordinates across 7 agents:**
+- ATS (Applicant Tracking) → HRIS → IT Access → Payroll → Calendar → Notifications → Learning Management
+
+### 🎯 Cross-Platform Customer Support
+**Multi-platform customer service coordination**
+- Seamless handoffs between Slack, Teams, Discord
+- Unified ticket management across platforms
+- Context preservation during platform switches
+
+### 💰 Financial Risk Management  
+**Risk assessment workflow coordination**
+- Multi-system risk evaluation
+- Automated compliance checking
+- Real-time decision coordination
+
+### 🧠 Intent Hierarchy
+**Semantic intent understanding**
+- Hierarchical intent relationships
+- Context-aware intent mapping
+- Intelligent fallback routing
+
+### 🔍 Semantic Intent Matching
+**Advanced intent classification**
+- ML-powered intent recognition
+- Cross-platform intent normalization
+- Confidence-based routing
+
+---
+
+## Repository Structure
+
+```
+/pact/
+├── pact_cli_mock.py           # Core PACT protocol server
+├── main_server.py             # Integrated server with extensions
+├── hr_workflows/              # HR workflow automation
+│   ├── __init__.py
+│   ├── hr_capabilities.py     # HR agent definitions
+│   ├── workflow_templates.py  # Workflow orchestration
+│   ├── hr_coordinator.py      # HR coordination logic
+│   ├── hr_demo_data.py        # Sample HR data
+│   └── README.md              # HR workflows documentation
+├── examples/                  # Domain-specific examples
+│   ├── cross_platform_customer_support/
+│   ├── financial_risk_management/
+│   ├── intent_hierarchy/
+│   ├── multiagent_devops_pipeline/
+│   └── semantic_intent_matching/
+└── README.md                  # This file
 ```
 
 ---
 
-## 🛠 Features
-- FastAPI webhook endpoint `/translate`
-- Static intent mapping (easily extendable)
-- Lightweight PACT envelope format
-- Ready for extension with ML intent classifiers
-- Docker-ready deployment
-- Postman collection for local testing
+## API Reference
+
+### Core Endpoints
+
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/` | GET | Server status and info |
+| `/translate` | POST | Translate intents between platforms |
+| `/negotiate` | POST | Agent capability negotiation |
+| `/status` | GET | Comprehensive server status |
+
+### HR Workflow Endpoints
+
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/hr/workflows/<type>` | POST | Execute HR workflow (onboarding, offboarding, etc.) |
+| `/hr/workflows/<id>/status` | GET | Check workflow progress |
+| `/hr/coordinate` | POST | Single HR action coordination |
+| `/hr/capabilities` | GET | Available HR agent capabilities |
+| `/hr/demo-data` | GET | Sample data for testing |
+
+### Demo & Testing
+
+```bash
+# Check server status
+curl http://127.0.0.1:8000/status
+
+# Get HR demo data
+curl http://127.0.0.1:8000/hr/demo-data
+
+# List available HR workflows
+curl http://127.0.0.1:8000/hr/workflows
+```
 
 ---
 
-# PACT Protocol
-## 📍 Project Roadmap
-See our development goals and priorities in the [Roadmap](docs/roadmap.md).
+## Development
+
+### Adding New Domains
+1. **Create domain directory** (e.g., `finance_workflows/`)
+2. **Define agent capabilities** following HR workflows pattern
+3. **Create workflow templates** for domain processes
+4. **Register Blueprint** in `main_server.py`
+
+### Extending Core PACT
+1. **Intent mappings** in `pact_cli_mock.py`
+2. **Capability definitions** in `AGENT_CAPABILITIES`
+3. **Response templates** for new agent types
+
+### Testing
+```bash
+# Start development server
+python main_server.py
+
+# Test core translation
+curl -X POST http://127.0.0.1:8000/translate \
+-H 'Content-Type: application/json' \
+-d '{"sender": {"platform": "Test"}, "recipient": {"platform": "Target"}, "payload": {"intent": "test_action"}}'
+
+# Test HR workflows
+curl -X POST http://127.0.0.1:8000/hr/workflows/onboarding \
+-H 'Content-Type: application/json' \
+-d '$(curl -s http://127.0.0.1:8000/hr/demo-data/onboarding | jq .sample_data)'
+```
 
 ---
 
-## 🚀 Getting Started
-New to PACT? Begin with our [Quick Start Guide](docs/quick_start.md) for a 5-minute onboarding experience.
+## Key Benefits
+
+### For Enterprises
+- **Reduced integration time** from weeks to minutes
+- **Vendor-neutral architecture** prevents lock-in
+- **Scalable coordination** across unlimited agents
+- **Built-in resilience** for mission-critical operations
+
+### For Developers  
+- **Simple API** with clear documentation
+- **Modular architecture** for easy extension
+- **Open source** with MIT license
+- **Production-ready** with Docker support
+
+### For System Architects
+- **Universal translation layer** for any agent ecosystem
+- **Foundation for multi-agent systems** at enterprise scale
+- **Future-proof protocol** designed for agent explosion
+- **Security and compliance** built into core design
 
 ---
 
-## 📚 Tutorials
+## Roadmap
 
-- [Quick Start Guide](docs/quick_start.md)
-- [Implementing Effective Fallbacks](docs/tutorials/implementing_effective_fallbacks.md)
-- [Advanced Capability Negotiation](docs/tutorials/advanced_capability_negotiation.md)
-- [Production Deployment Guide](docs/tutorials/production_deployment_guide.md)
+### Current (Phase 1)
+- ✅ Core intent translation protocol
+- ✅ Agent capability negotiation
+- ✅ HR workflow automation
+- ✅ Basic resilience and fallbacks
+
+### Next (Phase 2)
+- 🎯 Advanced ML intent classification
+- 🎯 Dynamic capability discovery
+- 🎯 Enhanced security features
+- 🎯 Performance optimization
+
+### Future (Phase 3)
+- 🎯 Enterprise deployment tools
+- 🎯 Multi-tenant architecture
+- 🎯 Advanced analytics and monitoring
+- 🎯 Industry-specific extensions
 
 ---
 
-## 🤝 Contributing
+## Contributing
 
-We welcome contributions!
-- Fork the repository
-- Submit a PR
-- Help extend PACT toward a true open communication standard
+We welcome contributions to extend PACT toward a true open communication standard!
 
-See [CONTRIBUTING.md](./CONTRIBUTING.md) for full guidelines.
-
-Good first issues:
-- Extend adapter to support new platforms (Intercom, Zendesk)
-- Add dynamic intent learning capabilities
+### Good First Issues
+- Extend adapters to support new platforms (Intercom, Zendesk)
+- Add dynamic intent learning capabilities  
 - Enhance error and fallback handling
+- Create new domain-specific workflow examples
+
+### How to Contribute
+1. **Fork the repository**
+2. **Create feature branch** (`git checkout -b feature/amazing-feature`)
+3. **Commit changes** (`git commit -m 'Add amazing feature'`)
+4. **Push to branch** (`git push origin feature/amazing-feature`)
+5. **Open Pull Request**
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines.
 
 ---
 
-## 📄 License
+## License
 
-MIT License - See [LICENSE](./LICENSE) for full text.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ---
 
-## 📬 Connect
+## Contact
 
-For ideas, discussions, or collaborations:
-- GitHub Discussions coming soon!
-- Contact: founders@neurobloom.ai
+**NeuroBloom.ai Team**
+- 📧 Email: [founders@neurobloom.ai](mailto:founders@neurobloom.ai)
+- 🌐 Website: [neurobloom.ai](https://neurobloom.ai)
+- 💬 GitHub Discussions: Coming soon!
 
-Together, let's build the protocol layer for agent collaboration. 🌍
+---
 
-## 🎯 Case Studies
-- [Semantic Intent Matching](docs/case_studies/semantic_intent_matching.md) - Bridge natural language to PACT protocols
+## Vision
+
+We're building resilient infrastructure for the future of agent communication and coordination. We believe the next evolution of AI won't be dominated by monolithic models—but by networks of agents that understand intent, cooperate intelligently, and recover gracefully.
+
+**Together, let's build the protocol layer for agent collaboration.** 🌍
+
+---
+
+**Built with ❤️ by NeuroBloom.ai**  
+*Making agent coordination inevitable, not innovative.*
