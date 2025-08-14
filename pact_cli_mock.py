@@ -1,7 +1,6 @@
 # Stop your current server (CTRL+C in the server terminal)
 # Then replace the entire file:
 
-cat > pact_cli_mock.py << 'EOF'
 # pact_cli_mock.py
 import json
 from flask import Flask, request, jsonify
@@ -112,4 +111,3 @@ def index():
 
 if __name__ == "__main__":
     app.run(debug=True, port=8000)
-EOF
