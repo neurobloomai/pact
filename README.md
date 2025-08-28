@@ -427,7 +427,7 @@ Every star helps us reach more developers and build a stronger ecosystem for age
 
 ---
 
-**🧠 Built with passion by [NeuroBloom AI](https://neurobloom.ai)**  
+**🧠 Built with passion by [NeuroBloom AI](https://www.neurobloom.ai)**  
 *We're not just building software—we're building trust, interoperability, and invisible systems that last.*
 
 **Ready to join the agent collaboration revolution?**  
