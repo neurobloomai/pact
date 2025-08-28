@@ -387,7 +387,7 @@ We believe in **open protocols** and **community ownership**. PACT is free to us
 - **GitHub Discussions**: [Ask questions, share ideas](https://github.com/neurobloomai/pact/discussions)
 - **Discord**: [Join our community](https://discord.gg/neurobloom) (Coming Soon!)
 - **Twitter**: [@neurobloomai](https://twitter.com/neurobloomai)
-- **LinkedIn**: [NeuroBloom AI](https://linkedin.com/company/neurobloom.ai)
+- **LinkedIn**: [NeuroBloom AI](https://www.linkedin.com/company/105214416/admin/dashboard/)
 
 ### 🆘 Get Help
 - **Documentation**: [docs.pact.neurobloom.ai](https://docs.pact.neurobloom.ai)
