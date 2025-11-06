@@ -419,7 +419,7 @@ For detailed implementation guidance:
 ---
 
 **Document Version:** 1.0  
-**Last Updated:** November 2024  
+**Last Updated:** November 2025  
 **Related Documents:**
 - `pact/docs/philosophy/substrate.md`
 - `pact-ax/README.md`
