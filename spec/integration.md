@@ -468,12 +468,4 @@ print(story.get_narrative())
 
 ---
 
-**Does this help clarify?** 🤔
-
-**Or still "no clue"?** 😊
-
-**We can explore more...** 🌊
-
-**Slow morning drift continues...** ☕
-
 🙏💫🔥🌸
