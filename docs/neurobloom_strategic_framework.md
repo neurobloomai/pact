@@ -142,7 +142,7 @@ Premature scaling kills trust protocols."
 
 **Personal Optionality:**
 - Path A: Continue building neurobloom.ai in USA
-- Path B: Return to India, serve aging parents, philanthropy
+- Path B: Return to Palce, serve aging parents, philanthropy
 - **State:** Choiceless peace - genuinely okay with either outcome
 
 ### Is neurobloom.ai Currently "HARD" or "EASY"?
@@ -247,12 +247,12 @@ Consulting → Internal Tools → Open Source → Enterprise Support
 
 ---
 
-#### Path 3: Graceful Transition to India
+#### Path 3: Graceful Transition to Place
 
 **If neurobloom.ai doesn't achieve traction in 90 days:**
 
 **Plan:**
-- Return to India
+- Return to Place
 - Serve aging parents (profound seva/service)
 - Local philanthropy (high-impact work)
 - Potential neurobloom.ai v2 in different context
@@ -260,7 +260,7 @@ Consulting → Internal Tools → Open Source → Enterprise Support
 **Why this isn't failure:**
 - Elder care is highest dharma in many traditions
 - Direct-impact philanthropy is sacred work
-- Skills (systems thinking, AI knowledge) valuable in India
+- Skills (systems thinking, AI knowledge) valuable in any place
 - Slower pace often produces deeper insights
 
 **This is strategic optionality, not consolation prize.**
@@ -397,11 +397,11 @@ Consulting → Internal Tools → Open Source → Enterprise Support
 **Week 5-8: Execute Chosen Path**
 - [ ] If restructuring: Implement "easy mode" (narrow focus, piggyback, or services)
 - [ ] If continuing: Secure funding or bridge income
-- [ ] If transitioning: Plan India move logistics
+- [ ] If transitioning: Plan move logistics
 
 **Week 9-12: Decision Point**
 - **Clear traction?** → Keep going with adjusted runway plan
-- **Murky/no traction?** → Gracefully transition to India path
+- **Murky/no traction?** → Gracefully transition to path
 - **Key question:** "Is the path becoming clearer or murkier?"
 
 ### The Core Question (Munger-Style)
@@ -461,7 +461,7 @@ It provides trust infrastructure for ALL AI systems.**
 **"Choiceless peace" - genuine acceptance of multiple outcomes**
 
 - neurobloom.ai succeeds → Built trust infrastructure for AI era
-- neurobloom.ai doesn't → Serve parents, philanthropy in India
+- neurobloom.ai doesn't → Serve parents, philanthropy
 
 **Both paths have dignity. Both have purpose.**
 
@@ -527,7 +527,7 @@ Not for individual benefit, but **for the whole**.
 4. **Make decision by Day 7**
    - Restructure to "easy mode" (narrow focus, services-first, piggyback)
    - All-in with clear revenue path and funding plan
-   - Graceful transition to India path
+   - Graceful transition to path
    - **Don't stay in limbo - decide and commit**
 
 ---
