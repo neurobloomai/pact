@@ -1,54 +1,91 @@
-# Merging pact_core with validation and testing into a single executable block for this environment
+"""
+pact_core.py — Core PACT protocol logic
+
+FallbackProcessor now delegates all intent mapping lookups to IntentRegistry
+instead of embedding hardcoded dicts.  This keeps business logic in one place
+and makes it trivially easy to extend mappings without touching Python code.
+"""
 
 import json
-from typing import Callable, Dict, Any, List
+import logging
+from typing import Any, Callable, Dict, List, Optional
+
 import jsonschema
 from jsonschema import validate
 
+from pact_protocol.intent_registry import IntentRegistry
 
-# Core message and processor classes
+logger = logging.getLogger(__name__)
+
+
+# ---------------------------------------------------------------------------
+# Core message type
+# ---------------------------------------------------------------------------
+
 class PACTMessage:
-    def __init__(self, intent: str, metadata: Dict[str, Any] = None):
+    def __init__(self, intent: str, metadata: Optional[Dict[str, Any]] = None):
         self.version = "0.1.0"
         self.intent = intent
         self.metadata = metadata or {}
 
-    def to_dict(self):
+    def to_dict(self) -> Dict[str, Any]:
         return {
             "version": self.version,
             "intent": self.intent,
-            "metadata": self.metadata
+            "metadata": self.metadata,
         }
 
 
+# ---------------------------------------------------------------------------
+# Capability management
+# ---------------------------------------------------------------------------
+
 class CapabilityManager:
-    def __init__(self):
+    def __init__(self) -> None:
         self.capabilities: Dict[str, Callable] = {}
 
-    def register_capability(self, action: str, handler: Callable):
+    def register_capability(self, action: str, handler: Callable) -> None:
         self.capabilities[action] = handler
 
     def advertise_capabilities(self) -> List[str]:
         return list(self.capabilities.keys())
 
-    def match_intent_to_capability(self, intent: str) -> str:
-        if intent in self.capabilities:
-            return intent
-        return None
+    def match_intent_to_capability(self, intent: str) -> Optional[str]:
+        return intent if intent in self.capabilities else None
 
-    def negotiate_parameters(self, intent: str, capability: str) -> Dict[str, Any]:
+    def negotiate_parameters(
+        self, intent: str, capability: str
+    ) -> Dict[str, Any]:
         return {"mapped_capability": capability}
 
 
+# ---------------------------------------------------------------------------
+# Fallback processor — now registry-driven
+# ---------------------------------------------------------------------------
+
 class FallbackProcessor:
-    def __init__(self, capability_manager: CapabilityManager):
+    """
+    Attempt to resolve an intent through a cascade of strategies.
+
+    All mapping lookups delegate to *registry* so that approximation /
+    decomposition rules live in config files rather than in source code.
+    """
+
+    def __init__(
+        self,
+        capability_manager: CapabilityManager,
+        registry: Optional[IntentRegistry] = None,
+    ) -> None:
         self.capability_manager = capability_manager
+        # Use the provided registry or auto-discover one
+        self.registry = registry or IntentRegistry.load()
+
         self.fallback_strategies = [
             self.exact_match,
+            self.registry_approximation,   # was: hardcoded dict
+            self.registry_decomposition,   # was: hardcoded dict
             self.parameter_adaptation,
-            self.intent_approximation,
-            self.intent_decomposition,
-            self.graceful_failure
+            self.graceful_failure,
         ]
 
     def process_with_fallbacks(self, intent: str) -> Dict[str, Any]:
@@ -58,43 +95,84 @@ class FallbackProcessor:
                 return {
                     "status": "handled_with_fallback",
                     "strategy": strategy.__name__,
-                    "result": result
+                    "result": result,
                 }
-        return self.graceful_failure(intent)
+        return self.graceful_failure(intent)  # guaranteed non-None
 
-    def exact_match(self, intent: str):
+    # ------------------------------------------------------------------
+    # Individual strategies
+    # ------------------------------------------------------------------
+
+    def exact_match(self, intent: str) -> Optional[Dict[str, Any]]:
+        """Direct hit in CapabilityManager — no translation needed."""
         if self.capability_manager.match_intent_to_capability(intent):
             return {"handled_by": "exact_match"}
-
-    def parameter_adaptation(self, intent: str):
-        if "meeting" in intent:
-            return {"adapted_intent": "schedule_meeting_basic"}
         return None
 
-    def intent_approximation(self, intent: str):
-        approximations = {
-            "book_meeting": "schedule_meeting",
-            "find_slot": "check_availability"
-        }
-        if intent in approximations:
-            return {"approximated_to": approximations[intent]}
+    def registry_approximation(self, intent: str) -> Optional[Dict[str, Any]]:
+        """
+        Translate *intent* via the registry mappings.
+
+        Returns a result only when a mapping actually exists (i.e. the
+        registry didn't return the original intent unchanged).
+        """
+        translated = self.registry.translate(intent)
+        if translated != intent:
+            logger.debug(
+                "registry_approximation: %s → %s", intent, translated
+            )
+            return {"approximated_to": translated}
         return None
 
-    def intent_decomposition(self, intent: str):
-        if intent == "organize_event":
-            return {"decomposed_intents": ["schedule_meeting", "send_invites"]}
+    def registry_decomposition(self, intent: str) -> Optional[Dict[str, Any]]:
+        """
+        Expand a compound intent into sub-intents via the registry.
+        """
+        sub_intents = self.registry.decompose(intent)
+        if sub_intents:
+            logger.debug(
+                "registry_decomposition: %s → %s", intent, sub_intents
+            )
+            return {"decomposed_intents": sub_intents}
         return None
 
-    def graceful_failure(self, intent: str):
+    def parameter_adaptation(self, intent: str) -> Optional[Dict[str, Any]]:
+        """
+        Heuristic last-resort: try to find a capability by inspecting
+        keyword tokens in the intent string.
+
+        Extend or replace this with a proper ML-based matcher (issue #4).
+        """
+        for token in intent.split("_"):
+            for capability in self.capability_manager.advertise_capabilities():
+                if token in capability:
+                    logger.debug(
+                        "parameter_adaptation: matched %r via token %r → %r",
+                        intent,
+                        token,
+                        capability,
+                    )
+                    return {"adapted_intent": capability}
+        return None
+
+    def graceful_failure(self, intent: str) -> Dict[str, Any]:
+        logger.warning("Unable to resolve intent: %r", intent)
         return {"error": "Unable to process intent", "intent": intent}
 
 
-class PACTProcessor:
-    def __init__(self):
-        self.capability_manager = CapabilityManager()
-        self.fallback_processor = FallbackProcessor(self.capability_manager)
+# ---------------------------------------------------------------------------
+# Top-level processor
+# ---------------------------------------------------------------------------
 
-    def register_capability(self, action: str, handler: Callable):
+class PACTProcessor:
+    def __init__(self, registry: Optional[IntentRegistry] = None) -> None:
+        self.capability_manager = CapabilityManager()
+        self.registry = registry or IntentRegistry.load()
+        self.fallback_processor = FallbackProcessor(
+            self.capability_manager, registry=self.registry
+        )
+
+    def register_capability(self, action: str, handler: Callable) -> None:
         self.capability_manager.register_capability(action, handler)
 
     def process_intent(self, message: PACTMessage) -> Dict[str, Any]:
@@ -104,21 +182,24 @@ class PACTProcessor:
             try:
                 result = handler(message)
                 return {"status": "success", "result": result}
-            except Exception as e:
-                return {"status": "error", "message": str(e)}
-        else:
-            return self.fallback_processor.process_with_fallbacks(message.intent)
+            except Exception as exc:
+                logger.error("Handler raised: %s", exc)
+                return {"status": "error", "message": str(exc)}
+        return self.fallback_processor.process_with_fallbacks(message.intent)
 
 
-# JSON schema for validation
+# ---------------------------------------------------------------------------
+# JSON schema validation (unchanged)
+# ---------------------------------------------------------------------------
+
 PACT_MESSAGE_SCHEMA = {
     "type": "object",
     "properties": {
         "version": {"type": "string"},
         "intent": {"type": "string"},
-        "metadata": {"type": "object"}
+        "metadata": {"type": "object"},
     },
-    "required": ["version", "intent"]
+    "required": ["version", "intent"],
 }
 
 
@@ -130,66 +211,9 @@ def validate_message(message: dict):
         return False, str(err)
 
 
-# Sample capability handler
-def sample_schedule_handler(message: PACTMessage):
+# ---------------------------------------------------------------------------
+# Sample capability handler (used in tests / demos)
+# ---------------------------------------------------------------------------
+
+def sample_schedule_handler(message: PACTMessage) -> Dict[str, Any]:
     return {"scheduled": True, "details": message.metadata}
-
-
-# Example agent test
-def test_agents():
-    agent = PACTProcessor()
-    agent.register_capability("schedule_meeting", sample_schedule_handler)
-
-    # Valid message
-    message_dict = {
-        "version": "0.1.0",
-        "intent": "schedule_meeting",
-        "metadata": {"time": "10:00 AM", "date": "2025-06-01"}
-    }
-    valid, msg = validate_message(message_dict)
-    assert valid, msg
-
-    message = PACTMessage(**message_dict)
-    result = agent.process_intent(message)
-    print("Test Result (Valid):", result)
-
-    # Unknown intent, triggers fallback
-    message_dict["intent"] = "book_meeting"
-    message = PACTMessage(**message_dict)
-    result = agent.process_intent(message)
-    print("Test Result (Fallback):", result)
-
-
-# Run test
-test_agents()
-
-# Adjusting test to strip out 'version' key before creating PACTMessage instances
-
-def test_agents_fixed():
-    agent = PACTProcessor()
-    agent.register_capability("schedule_meeting", sample_schedule_handler)
-
-    # Valid message
-    message_dict = {
-        "version": "0.1.0",
-        "intent": "schedule_meeting",
-        "metadata": {"time": "10:00 AM", "date": "2025-06-01"}
-    }
-    valid, msg = validate_message(message_dict)
-    assert valid, msg
-
-    # Remove version for instantiation
-    message = PACTMessage(intent=message_dict["intent"], metadata=message_dict["metadata"])
-    result = agent.process_intent(message)
-    print("Test Result (Valid):", result)
-
-    # Unknown intent, triggers fallback
-    message_dict["intent"] = "book_meeting"
-    message = PACTMessage(intent=message_dict["intent"], metadata=message_dict["metadata"])
-    result = agent.process_intent(message)
-    print("Test Result (Fallback):", result)
-
-
-# Run the fixed test
-test_agents_fixed()
-

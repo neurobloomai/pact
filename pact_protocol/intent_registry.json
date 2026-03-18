@@ -1,0 +1,23 @@
+{
+  "_comment": "PACT Intent Registry — edit this file to add or remap intents without touching Python code.",
+  "_version": "0.1.0",
+
+  "mappings": {
+    "check_order_status":  "order.lookup",
+    "reset_password":      "user.reset_password",
+    "book_meeting":        "schedule_meeting",
+    "find_slot":           "check_availability",
+    "get_user_profile":    "user.get_profile",
+    "update_user_profile": "user.update_profile",
+    "cancel_order":        "order.cancel",
+    "track_shipment":      "order.track",
+    "send_notification":   "notification.send",
+    "escalate_ticket":     "support.escalate"
+  },
+
+  "decompositions": {
+    "organize_event":         ["schedule_meeting", "send_invites"],
+    "onboard_employee":       ["create_user_account", "assign_role", "send_welcome_email"],
+    "offboard_employee":      ["revoke_access", "archive_account", "notify_hr"]
+  }
+}
