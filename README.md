@@ -84,11 +84,9 @@ No existing system answers all three. Most answer none.
 PACT uses a three-layer trust measurement architecture:
 
 ```
-SMA (StoryKeeper)        — Long baseline. What has this agent consistently been?
-EMA (Rupture Detection)  — Recency-sensitive. What just changed?
-WMA (Trust Score)        — Weighted judgment. What does the pattern say?
-
-SMA + EMA + WMA → RI → RQ
+StoryKeeper     — Long behavioral baseline. What has this agent consistently been?
+Rupture Detection (RLP-0) — Recency-sensitive drift detection. What just changed?
+Trust Score     — Weighted synthesis. What does the full pattern say?
 ```
 
 **StoryKeeper** maintains the long behavioral baseline — the agent's relational history.
